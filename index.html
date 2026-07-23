@@ -38,7 +38,7 @@
             align-items: center;
         }
 
-        /* FOND MATRIX (SANS INTERFÉRENCE) */
+        /* FOND MATRIX */
         #matrix-bg {
             position: fixed;
             top: 0;
@@ -153,7 +153,6 @@
             line-height: 1.3;
         }
 
-        /* OBJECTIF CLEAN & SANS DEBORDEMENT */
         .objective-highlight {
             background: rgba(0, 255, 102, 0.1);
             border-left: 3px solid var(--lyoko-green);
@@ -162,7 +161,7 @@
             font-weight: bold;
             font-size: 0.95rem;
             line-height: 1.4;
-            white-space: normal; /* Empêche les retours à la ligne bizarres */
+            white-space: normal;
         }
 
         .rules-list {
@@ -249,7 +248,7 @@
             <div class="mission-intro">X.A.N.A. lance une attaque sur le Supercalculateur !</div>
             
             <div class="objective-highlight">
-                ⚡ Objectif : Marque au moins 15 Points en 35 secondes !
+                ⚡ Objectif : Marque au moins 25 Points en 35 secondes !
             </div>
 
             <ul class="rules-list">
@@ -298,12 +297,10 @@
                 }
             });
 
-            // Essai de lancement musique au toucher
             document.body.addEventListener('touchstart', () => {
                 if (audio.paused) playMusic();
             }, { once: true });
 
-            // Redirection vers le jeu
             startBtn.addEventListener('click', () => {
                 window.location.href = 'jeu.html';
             });
