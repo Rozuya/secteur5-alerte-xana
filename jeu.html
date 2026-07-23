@@ -46,7 +46,7 @@
             opacity: 0.3;
         }
 
-        /* BARRE AUDIO */
+        /* BARRE AUDIO EN HAUT */
         .audio-controls {
             position: fixed;
             top: 15px;
@@ -63,8 +63,8 @@
         }
 
         .music-btn {
-            background: var(--error-red);
-            color: #ffffff;
+            background: var(--lyoko-blue);
+            color: #000;
             border: none;
             padding: 6px 12px;
             font-family: 'Share Tech Mono', monospace;
@@ -88,16 +88,23 @@
             width: 70px;
         }
 
-        /* HEADER */
-        .game-header {
+        /* TABLEAU DE BORD DU HAUT */
+        .top-container {
             margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .game-header {
             background: rgba(8, 12, 20, 0.9);
             border: 2px solid var(--lyoko-blue);
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 8px 20px;
             display: flex;
             gap: 25px;
-            z-index: 10;
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
         }
 
@@ -105,6 +112,24 @@
         .stat-title { font-size: 0.75rem; color: #fff; text-transform: uppercase; }
         .stat-value { font-size: 1.6rem; font-weight: bold; color: var(--lyoko-green); }
         .stat-value.red { color: var(--error-red); }
+
+        /* PETIT BANDEAU RAPPEL DES RÈGLES */
+        .mini-rules-bar {
+            background: rgba(8, 12, 20, 0.85);
+            border: 1px dashed var(--lyoko-blue);
+            border-radius: 6px;
+            padding: 4px 12px;
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .mini-rules-bar span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
         /* ZONE DE JEU */
         .game-area {
@@ -114,7 +139,7 @@
             z-index: 10;
         }
 
-        /* SPECTRES & CIBLES DESIGN EN SVG */
+        /* CIBLES EN SVG */
         .target {
             position: absolute;
             width: 80px;
@@ -125,7 +150,7 @@
             justify-content: center;
             align-items: center;
             touch-action: manipulation;
-            animation: spawnAnim 0.3s ease-out;
+            animation: spawnAnim 0.25s ease-out;
         }
 
         @keyframes spawnAnim {
@@ -133,28 +158,19 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* TYPE 1 : SPECTRE RED (X.A.N.A.) */
-        .target.red-spectre {
-            filter: drop-shadow(0 0 12px var(--error-red));
+        .target.red-spectre { filter: drop-shadow(0 0 12px var(--error-red)); }
+        .target.blue-bonus { 
+            filter: drop-shadow(0 0 15px var(--lyoko-blue)); 
+            animation: pulseBonus 0.5s infinite alternate; 
         }
-
-        /* TYPE 2 : BUG BLUE (+3 PTS) */
-        .target.blue-bonus {
-            filter: drop-shadow(0 0 15px var(--lyoko-blue));
-            animation: pulseBonus 0.6s infinite alternate;
-        }
+        .target.yellow-trap { filter: drop-shadow(0 0 12px var(--warning-yellow)); }
 
         @keyframes pulseBonus {
             from { transform: scale(0.95); }
             to { transform: scale(1.15); }
         }
 
-        /* TYPE 3 : VIRUS TRAP (-1 PT) */
-        .target.yellow-trap {
-            filter: drop-shadow(0 0 12px var(--warning-yellow));
-        }
-
-        /* MODALE */
+        /* FENÊTRE DE FIN DE PARTIE */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -162,7 +178,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 100;
@@ -181,18 +197,6 @@
 
         .modal h2 { font-size: 1.8rem; margin-bottom: 12px; text-transform: uppercase; }
         .modal p { color: #fff; font-size: 1.1rem; margin-bottom: 20px; line-height: 1.5; }
-
-        .legend-box {
-            background: rgba(255,255,255,0.05);
-            border: 1px dashed var(--lyoko-blue);
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-
-        .legend-box div { margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
 
         .btn-group { display: flex; flex-direction: column; gap: 10px; }
 
@@ -217,6 +221,7 @@
             .stat-value { font-size: 1.3rem; }
             .target { width: 75px; height: 75px; }
             .modal h2 { font-size: 1.5rem; }
+            .mini-rules-bar { font-size: 0.7rem; gap: 8px; padding: 3px 8px; }
         }
     </style>
 </head>
@@ -229,21 +234,29 @@
     </audio>
 
     <div class="audio-controls">
-        <button id="toggle-music" class="music-btn">🔇 MUSIQUE : OFF</button>
+        <button id="toggle-music" class="music-btn">🔊 MUSIQUE : ON</button>
         <div class="volume-container">
             <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
             <span id="volume-text">50%</span>
         </div>
     </div>
 
-    <div class="game-header">
-        <div class="stat-box">
-            <div class="stat-title">SCORE</div>
-            <div class="stat-value" id="score">0 / 12</div>
+    <div class="top-container">
+        <div class="game-header">
+            <div class="stat-box">
+                <div class="stat-title">SCORE</div>
+                <div class="stat-value" id="score">0 / 12</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-title">CHRONO</div>
+                <div class="stat-value red" id="timer">35s</div>
+            </div>
         </div>
-        <div class="stat-box">
-            <div class="stat-title">CHRONO</div>
-            <div class="stat-value red" id="timer">35s</div>
+
+        <div class="mini-rules-bar">
+            <span>🔴 +1pt</span>
+            <span>🔵 +3pts</span>
+            <span>🟠 -1pt</span>
         </div>
     </div>
 
@@ -251,18 +264,9 @@
 
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
-            <h2 id="modal-title" style="color: var(--lyoko-blue);">SECTEUR 5 : MISSION</h2>
-            <p id="modal-text">Atteins **12 Points** avant la fin du temps pour désactiver la tour !</p>
-            
-            <div class="legend-box">
-                <div>🔴 <strong>Spectre X.A.N.A. :</strong> +1 Point</div>
-                <div>🔵 <strong>Orbe Cyan :</strong> +3 Points !</div>
-                <div>🟠 <strong>Faux Bug :</strong> -1 Point !</div>
-            </div>
-
-            <div class="btn-group" id="modal-buttons">
-                <button class="btn btn-green" onclick="startGame()">▶️ JOUER</button>
-            </div>
+            <h2 id="modal-title"></h2>
+            <p id="modal-text"></p>
+            <div class="btn-group" id="modal-buttons"></div>
         </div>
     </div>
 
@@ -286,8 +290,9 @@
             let gameActive = false;
             let gameInterval, targetTimeout;
 
-            // --- AUDIO ---
+            // --- GESTION AUDIO ---
             audio.volume = parseFloat(volumeSlider.value);
+            
             function updateVol() {
                 audio.volume = parseFloat(volumeSlider.value);
                 volumeText.innerText = Math.round(audio.volume * 100) + "%";
@@ -299,7 +304,11 @@
                     musicBtn.innerText = "🔊 MUSIQUE : ON";
                     musicBtn.style.background = "var(--lyoko-blue)";
                     musicBtn.style.color = "#000";
-                }).catch(e => console.log("Audio bloqué"));
+                }).catch(e => {
+                    musicBtn.innerText = "🔇 MUSIQUE : OFF";
+                    musicBtn.style.background = "var(--error-red)";
+                    musicBtn.style.color = "#fff";
+                });
             }
 
             function stopMusic() {
@@ -313,7 +322,7 @@
                 if (audio.paused) playMusic(); else stopMusic();
             });
 
-            // --- FOND MATRIX ---
+            // --- MATRIX BG ---
             const canvas = document.getElementById('matrix-bg');
             const ctx = canvas.getContext('2d');
             function res() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -331,48 +340,30 @@
             }
             setInterval(mtrx, 50);
 
-            // --- DESIGN SVG DES SPECTRES ---
-            const svgRedSpectre = `
-                <svg viewBox="0 0 100 100" width="100%" height="100%">
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="#ff3366" stroke-width="4" stroke-dasharray="6,6"/>
-                    <circle cx="50" cy="50" r="32" fill="#ff3366" opacity="0.2"/>
-                    <circle cx="50" cy="50" r="20" fill="#ff3366"/>
-                    <path d="M 50,20 L 50,80 M 20,50 L 80,50 M 30,30 L 70,70 M 30,70 L 70,30" stroke="#ffffff" stroke-width="3"/>
-                    <circle cx="50" cy="50" r="8" fill="#ffffff"/>
-                </svg>`;
+            // --- VISUELS SVG ---
+            const svgRedSpectre = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3366" stroke-width="4" stroke-dasharray="6,6"/><circle cx="50" cy="50" r="32" fill="#ff3366" opacity="0.2"/><circle cx="50" cy="50" r="20" fill="#ff3366"/><path d="M 50,20 L 50,80 M 20,50 L 80,50 M 30,30 L 70,70 M 30,70 L 70,30" stroke="#ffffff" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="#ffffff"/></svg>`;
+            const svgBlueBonus = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="4"/><circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.3"/><polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/><circle cx="50" cy="50" r="10" fill="#ffffff"/></svg>`;
+            const svgYellowTrap = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="4" stroke-dasharray="3,3"/><polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.4"/><text x="50" y="68" font-size="40" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text></svg>`;
 
-            const svgBlueBonus = `
-                <svg viewBox="0 0 100 100" width="100%" height="100%">
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="4"/>
-                    <circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.3"/>
-                    <polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/>
-                    <circle cx="50" cy="50" r="10" fill="#ffffff"/>
-                </svg>`;
-
-            const svgYellowTrap = `
-                <svg viewBox="0 0 100 100" width="100%" height="100%">
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="4" stroke-dasharray="3,3"/>
-                    <polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.4"/>
-                    <text x="50" y="68" font-size="40" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text>
-                </svg>`;
-
-            // --- LOGIQUE JEU ---
-            window.startGame = function() {
+            // --- DÉMARRAGE DU JEU ---
+            function startGame() {
                 playMusic();
                 score = 0;
                 timeLeft = 35;
                 gameActive = true;
-                scoreEl.innerText = `${score} / ${targetScore}`;
+                scoreEl.innerText = `${score} /${targetScore}`;
                 timerEl.innerText = `${timeLeft}s`;
                 modalOverlay.style.display = 'none';
 
+                if(gameInterval) clearInterval(gameInterval);
                 gameInterval = setInterval(() => {
                     timeLeft--;
                     timerEl.innerText = `${timeLeft}s`;
                     if (timeLeft <= 0) endGame(false);
                 }, 1000);
+
                 spawn();
-            };
+            }
 
             function spawn() {
                 gameArea.innerHTML = '';
@@ -381,7 +372,6 @@
                 const t = document.createElement('div');
                 t.classList.add('target');
 
-                // Probabilités : 70% Rouge (+1), 20% Bleu (+3), 10% Jaune (-1)
                 const rand = Math.random();
                 let points = 1;
 
@@ -406,8 +396,8 @@
 
                 t.addEventListener('click', () => {
                     score += points;
-                    if (score < 0) score = 0; // Pas de score négatif
-                    scoreEl.innerText = `${score} / ${targetScore}`;
+                    if (score < 0) score = 0;
+                    scoreEl.innerText = `${score} /${targetScore}`;
 
                     if (score >= targetScore) {
                         endGame(true);
@@ -418,7 +408,7 @@
                 });
 
                 gameArea.appendChild(t);
-                targetTimeout = setTimeout(spawn, 1400); // Rythme très équilibré (1.4s)
+                targetTimeout = setTimeout(spawn, 1400);
             }
 
             function endGame(win) {
@@ -433,19 +423,4 @@
                     modalTitle.style.color = "var(--lyoko-green)";
                     modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. et sauvé le Supercalculateur !";
                     modalButtons.innerHTML = `
-                        <button class="btn btn-blue" onclick="window.location.href='index.html'">👤 ENFANT SUIVANT</button>
-                    `;
-                } else {
-                    modalTitle.innerText = "❌ ÉCHEC MISSION";
-                    modalTitle.style.color = "var(--error-red)";
-                    modalText.innerText = "X.A.N.A. a pris le contrôle ! Veux-tu réessayer ou passer la main ?";
-                    modalButtons.innerHTML = `
-                        <button class="btn btn-green" onclick="startGame()">🔄 RÉESSAYER</button>
-                        <button class="btn btn-blue" onclick="window.location.href='index.html'">👤 ENFANT SUIVANT</button>
-                    `;
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+                        <button class
