@@ -88,7 +88,7 @@
             width: 70px;
         }
 
-        /* TABLEAU DE BORD DU HAUT */
+        /* BANDEAU EN-TÊTE ET RÈGLES */
         .top-container {
             margin-top: 15px;
             display: flex;
@@ -113,7 +113,6 @@
         .stat-value { font-size: 1.6rem; font-weight: bold; color: var(--lyoko-green); }
         .stat-value.red { color: var(--error-red); }
 
-        /* PETIT BANDEAU RAPPEL DES RÈGLES */
         .mini-rules-bar {
             background: rgba(8, 12, 20, 0.85);
             border: 1px dashed var(--lyoko-blue);
@@ -139,18 +138,18 @@
             z-index: 10;
         }
 
-        /* CIBLES EN SVG */
+        /* CIBLES SVG */
         .target {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 75px;
+            height: 75px;
             cursor: pointer;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             touch-action: manipulation;
-            animation: spawnAnim 0.25s ease-out;
+            animation: spawnAnim 0.2s ease-out;
         }
 
         @keyframes spawnAnim {
@@ -161,16 +160,16 @@
         .target.red-spectre { filter: drop-shadow(0 0 12px var(--error-red)); }
         .target.blue-bonus { 
             filter: drop-shadow(0 0 15px var(--lyoko-blue)); 
-            animation: pulseBonus 0.5s infinite alternate; 
+            animation: pulseBonus 0.4s infinite alternate; 
         }
         .target.yellow-trap { filter: drop-shadow(0 0 12px var(--warning-yellow)); }
 
         @keyframes pulseBonus {
-            from { transform: scale(0.95); }
+            from { transform: scale(0.9); }
             to { transform: scale(1.15); }
         }
 
-        /* FENÊTRE DE FIN DE PARTIE */
+        /* MODALE FIN DE PARTIE */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -219,7 +218,7 @@
 
         @media (max-width: 480px) {
             .stat-value { font-size: 1.3rem; }
-            .target { width: 75px; height: 75px; }
+            .target { width: 70px; height: 70px; }
             .modal h2 { font-size: 1.5rem; }
             .mini-rules-bar { font-size: 0.7rem; gap: 8px; padding: 3px 8px; }
         }
@@ -245,7 +244,7 @@
         <div class="game-header">
             <div class="stat-box">
                 <div class="stat-title">SCORE</div>
-                <div class="stat-value" id="score">0 / 12</div>
+                <div class="stat-value" id="score">0 / 15</div>
             </div>
             <div class="stat-box">
                 <div class="stat-title">CHRONO</div>
@@ -285,7 +284,7 @@
             const modalButtons = document.getElementById('modal-buttons');
 
             let score = 0;
-            const targetScore = 12;
+            const targetScore = 15;
             let timeLeft = 35;
             let gameActive = false;
             let gameInterval, targetTimeout;
@@ -345,13 +344,13 @@
             const svgBlueBonus = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="4"/><circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.3"/><polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/><circle cx="50" cy="50" r="10" fill="#ffffff"/></svg>`;
             const svgYellowTrap = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="4" stroke-dasharray="3,3"/><polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.4"/><text x="50" y="68" font-size="40" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text></svg>`;
 
-            // --- DÉMARRAGE DU JEU ---
+            // --- LOGIQUE JEU ---
             function startGame() {
                 playMusic();
                 score = 0;
                 timeLeft = 35;
                 gameActive = true;
-                scoreEl.innerText = `${score} /${targetScore}`;
+                scoreEl.innerText = `${score} / ${targetScore}`;
                 timerEl.innerText = `${timeLeft}s`;
                 modalOverlay.style.display = 'none';
 
@@ -375,11 +374,11 @@
                 const rand = Math.random();
                 let points = 1;
 
-                if (rand < 0.70) {
+                if (rand < 0.65) {
                     t.classList.add('red-spectre');
                     t.innerHTML = svgRedSpectre;
                     points = 1;
-                } else if (rand < 0.88) {
+                } else if (rand < 0.80) {
                     t.classList.add('blue-bonus');
                     t.innerHTML = svgBlueBonus;
                     points = 3;
@@ -389,38 +388,12 @@
                     points = -1;
                 }
 
-                const maxX = gameArea.clientWidth - 90;
-                const maxY = gameArea.clientHeight - 90;
+                const maxX = gameArea.clientWidth - 85;
+                const maxY = gameArea.clientHeight - 85;
                 t.style.left = Math.max(10, Math.floor(Math.random() * maxX)) + "px";
                 t.style.top = Math.max(10, Math.floor(Math.random() * maxY)) + "px";
 
                 t.addEventListener('click', () => {
                     score += points;
                     if (score < 0) score = 0;
-                    scoreEl.innerText = `${score} /${targetScore}`;
-
-                    if (score >= targetScore) {
-                        endGame(true);
-                    } else {
-                        clearTimeout(targetTimeout);
-                        spawn();
-                    }
-                });
-
-                gameArea.appendChild(t);
-                targetTimeout = setTimeout(spawn, 1400);
-            }
-
-            function endGame(win) {
-                gameActive = false;
-                clearInterval(gameInterval);
-                clearTimeout(targetTimeout);
-                gameArea.innerHTML = '';
-                modalOverlay.style.display = 'flex';
-
-                if (win) {
-                    modalTitle.innerText = "🎉 TOUR DÉSACTIVÉE !";
-                    modalTitle.style.color = "var(--lyoko-green)";
-                    modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. et sauvé le Supercalculateur !";
-                    modalButtons.innerHTML = `
-                        <button class
+                    scoreEl.innerText = `${score} / ${targetScore}`;
