@@ -37,7 +37,7 @@
             flex-direction: column;
         }
 
-        /* FOND MATRIX (INTERACTION DESACTIVÉE POUR NE PAS BLOQUER LES CLICS) */
+        /* FOND MATRIX (NE BLOQUE PAS LES CLICS) */
         #matrix-bg {
             position: fixed;
             top: 0;
@@ -49,18 +49,18 @@
             pointer-events: none;
         }
 
-        /* BARRE AUDIO */
+        /* BARRE AUDIO EN HAUT */
         .audio-controls {
             position: absolute;
             top: 10px;
             right: 10px;
             background: rgba(8, 12, 20, 0.95);
-            border: 1px solid var(--lyoko-blue);
+            border: 2px solid var(--lyoko-blue);
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             z-index: 50;
         }
 
@@ -68,12 +68,13 @@
             background: var(--lyoko-blue);
             color: #000;
             border: none;
-            padding: 6px 10px;
+            padding: 8px 12px;
             font-family: 'Share Tech Mono', monospace;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 5px;
+            touch-action: manipulation;
         }
 
         .volume-container {
@@ -81,76 +82,78 @@
             align-items: center;
             gap: 6px;
             color: var(--lyoko-blue);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: bold;
         }
 
         input[type="range"] {
             accent-color: var(--lyoko-green);
             cursor: pointer;
-            width: 60px;
+            width: 70px;
         }
 
-        /* EN-TÊTE DU JEU */
+        /* BANDEAU ET SCORE */
         .top-container {
             position: relative;
             z-index: 10;
             width: 100%;
-            padding-top: 45px;
+            padding-top: 55px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
         .game-header {
             background: rgba(8, 12, 20, 0.92);
             border: 2px solid var(--lyoko-blue);
-            border-radius: 10px;
-            padding: 8px 20px;
+            border-radius: 12px;
+            padding: 10px 25px;
             display: flex;
-            gap: 25px;
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+            gap: 30px;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.4);
         }
 
         .stat-box { text-align: center; }
-        .stat-title { font-size: 0.75rem; color: #fff; text-transform: uppercase; }
-        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--lyoko-green); }
+        .stat-title { font-size: 0.8rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--lyoko-green); }
         .stat-value.red { color: var(--error-red); }
 
         .mini-rules-bar {
             background: rgba(8, 12, 20, 0.85);
             border: 1px dashed var(--lyoko-blue);
-            border-radius: 6px;
-            padding: 4px 12px;
+            border-radius: 8px;
+            padding: 6px 16px;
             display: flex;
-            gap: 12px;
-            font-size: 0.8rem;
+            gap: 16px;
+            font-size: 0.9rem;
             color: var(--text-main);
+            font-weight: bold;
         }
 
-        /* ZONE DE JEU GARANTIE VISIBLE */
+        /* ZONE DE JEU GRAND ESPACE */
         .game-area {
             position: relative;
             width: 100%;
             flex: 1;
-            min-height: 250px;
+            min-height: 280px;
             z-index: 10;
             overflow: hidden;
             touch-action: manipulation;
         }
 
-        /* CIBLES EN SVG */
+        /* CIBLES ADAPTÉES ENFANTS (85px) */
         .target {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 85px;
+            height: 85px;
             cursor: pointer;
             border-radius: 50%;
             display: block;
             z-index: 20;
             touch-action: manipulation;
-            animation: spawnAnim 0.15s ease-out;
+            animation: spawnAnim 0.2s ease-out;
         }
 
         @keyframes spawnAnim {
@@ -158,19 +161,19 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        .target.red-spectre { filter: drop-shadow(0 0 10px var(--error-red)); }
+        .target.red-spectre { filter: drop-shadow(0 0 12px var(--error-red)); }
         .target.blue-bonus { 
-            filter: drop-shadow(0 0 12px var(--lyoko-blue)); 
-            animation: pulseBonus 0.35s infinite alternate; 
+            filter: drop-shadow(0 0 15px var(--lyoko-blue)); 
+            animation: pulseBonus 0.5s infinite alternate; 
         }
-        .target.yellow-trap { filter: drop-shadow(0 0 10px var(--warning-yellow)); }
+        .target.yellow-trap { filter: drop-shadow(0 0 12px var(--warning-yellow)); }
 
         @keyframes pulseBonus {
-            from { transform: scale(0.9); }
-            to { transform: scale(1.15); }
+            from { transform: scale(0.92); }
+            to { transform: scale(1.12); }
         }
 
-        /* ECRAN DE FIN DE PARTIE */
+        /* MODALE FIN DE PARTIE */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -184,18 +187,18 @@
         .modal {
             background: #0a1118;
             border: 3px solid var(--lyoko-blue);
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 28px;
             text-align: center;
-            max-width: 400px;
+            max-width: 420px;
             width: 90%;
-            box-shadow: 0 0 30px var(--lyoko-blue);
+            box-shadow: 0 0 35px var(--lyoko-blue);
         }
 
-        .modal h2 { font-size: 1.6rem; margin-bottom: 10px; text-transform: uppercase; }
-        .modal p { color: #fff; font-size: 1rem; margin-bottom: 20px; line-height: 1.4; }
+        .modal h2 { font-size: 1.8rem; margin-bottom: 12px; text-transform: uppercase; }
+        .modal p { color: #fff; font-size: 1.1rem; margin-bottom: 22px; line-height: 1.4; }
 
-        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn-group { display: flex; flex-direction: column; gap: 12px; }
 
         .btn {
             padding: 14px 20px;
@@ -203,15 +206,16 @@
             font-size: 1.1rem;
             font-weight: bold;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             text-transform: uppercase;
+            touch-action: manipulation;
         }
-        .btn-green { background: var(--lyoko-green); color: #000; }
-        .btn-blue { background: var(--lyoko-blue); color: #000; }
+        .btn-green { background: var(--lyoko-green); color: #000; box-shadow: 0 0 10px var(--lyoko-green); }
+        .btn-blue { background: var(--lyoko-blue); color: #000; box-shadow: 0 0 10px var(--lyoko-blue); }
 
         @media (max-width: 480px) {
-            .target { width: 65px; height: 65px; }
+            .target { width: 75px; height: 75px; }
             .volume-container span { display: none; }
         }
     </style>
@@ -275,9 +279,11 @@
             const modalText = document.getElementById('modal-text');
             const modalButtons = document.getElementById('modal-buttons');
 
+            // --- RE-RÉGLAGES ENFANTS (15 POINTS / 35 SECONDES) ---
             let score = 0;
-            const targetScore = 15;
-            let timeLeft = 35;
+            const targetScore = 15;      // Score cible ajusté à 15 points
+            let timeLeft = 35;           // Chrono réglé à 35s
+            const targetDuration = 2500;  // Durée d'affichage de 2.5s (2500 ms)
             let gameActive = false;
             let gameInterval = null;
             let targetTimeout = null;
@@ -310,7 +316,7 @@
                 }
             });
 
-            // --- FOND MATRIX ANIMÉ ---
+            // --- FOND ANIMÉ MATRIX ---
             const canvas = document.getElementById('matrix-bg');
             const ctx = canvas.getContext('2d');
             function res() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -328,12 +334,12 @@
                 });
             }, 45);
 
-            // --- DESIGN CIBLES SVG ---
-            const svgRed = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3366" stroke-width="4" stroke-dasharray="6,6"/><circle cx="50" cy="50" r="32" fill="#ff3366" opacity="0.25"/><circle cx="50" cy="50" r="20" fill="#ff3366"/><line x1="50" y1="15" x2="50" y2="85" stroke="#ffffff" stroke-width="3"/><line x1="15" y1="50" x2="85" y2="50" stroke="#ffffff" stroke-width="3"/><circle cx="50" cy="50" r="7" fill="#ffffff"/></svg>`;
-            const svgBlue = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="4"/><circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.3"/><polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/><circle cx="50" cy="50" r="10" fill="#ffffff"/></svg>`;
-            const svgYellow = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="4"/><polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.4"/><text x="50" y="68" font-size="42" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text></svg>`;
+            // --- SVGs DES CIBLES ---
+            const svgRed = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3366" stroke-width="5" stroke-dasharray="6,6"/><circle cx="50" cy="50" r="32" fill="#ff3366" opacity="0.25"/><circle cx="50" cy="50" r="20" fill="#ff3366"/><line x1="50" y1="12" x2="50" y2="88" stroke="#ffffff" stroke-width="3"/><line x1="12" y1="50" x2="88" y2="50" stroke="#ffffff" stroke-width="3"/><circle cx="50" cy="50" r="7" fill="#ffffff"/></svg>`;
+            const svgBlue = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="5"/><circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.35"/><polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/><circle cx="50" cy="50" r="10" fill="#ffffff"/></svg>`;
+            const svgYellow = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="5"/><polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.45"/><text x="50" y="68" font-size="42" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text></svg>`;
 
-            // --- DEBUT DE PARTIE ---
+            // --- DÉMARRAGE DE PARTIE ---
             function startGame() {
                 playMusic();
                 score = 0;
@@ -374,11 +380,11 @@
                     t.classList.add('yellow-trap'); t.innerHTML = svgYellow; points = -1;
                 }
 
-                // Calcul dimensionnel dynamique
+                // Dimensionnement de la zone dynamique
                 const w = gameArea.clientWidth || window.innerWidth;
                 const h = gameArea.clientHeight || (window.innerHeight * 0.6);
 
-                const targetSize = 70;
+                const targetSize = window.innerWidth <= 480 ? 75 : 85;
                 const maxX = Math.max(10, w - targetSize - 15);
                 const maxY = Math.max(10, h - targetSize - 15);
 
@@ -406,15 +412,15 @@
                     }
                 };
 
-                // Écouteurs universels tactile et souris
+                // Écouteurs instantanés pour Smartphone & PC
                 t.addEventListener('pointerdown', onHit);
-                t.addEventListener('click', onHit);
 
                 gameArea.appendChild(t);
 
+                // Disparition et réapparition après 2,5 secondes
                 targetTimeout = setTimeout(() => {
                     if (gameActive) spawn();
-                }, 1000);
+                }, targetDuration);
             }
 
             // --- FIN DE PARTIE ---
@@ -429,12 +435,12 @@
                 if (win) {
                     modalTitle.innerText = "🎉 TOUR DÉSACTIVÉE !";
                     modalTitle.style.color = "var(--lyoko-green)";
-                    modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. !";
+                    modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. et sauvé le Supercalculateur !";
                     modalButtons.innerHTML = `<button class="btn btn-blue" id="next-btn">👤 ENFANT SUIVANT</button>`;
                 } else {
                     modalTitle.innerText = "❌ ÉCHEC MISSION";
                     modalTitle.style.color = "var(--error-red)";
-                    modalText.innerText = "X.A.N.A. a pris le contrôle !";
+                    modalText.innerText = "Le temps est écoulé ! X.A.N.A. a pris le contrôle !";
                     modalButtons.innerHTML = `
                         <button class="btn btn-green" id="retry-btn">🔄 RÉESSAYER</button>
                         <button class="btn btn-blue" id="next-btn">👤 ENFANT SUIVANT</button>
