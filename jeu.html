@@ -12,6 +12,7 @@
             --lyoko-blue: #00ccff;
             --bg-dark: #05080a;
             --error-red: #ff3366;
+            --warning-yellow: #ffcc00;
             --text-main: #e0e0e0;
         }
 
@@ -45,7 +46,7 @@
             opacity: 0.3;
         }
 
-        /* BARRE D'AUDIO EN HAUT */
+        /* BARRE AUDIO */
         .audio-controls {
             position: fixed;
             top: 15px;
@@ -53,10 +54,10 @@
             background: rgba(8, 12, 20, 0.95);
             border: 1px solid var(--lyoko-blue);
             border-radius: 8px;
-            padding: 10px 15px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             z-index: 50;
             box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
         }
@@ -68,7 +69,7 @@
             padding: 6px 12px;
             font-family: 'Share Tech Mono', monospace;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             border-radius: 4px;
         }
@@ -76,33 +77,33 @@
         .volume-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--lyoko-blue);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         input[type="range"] {
             accent-color: var(--lyoko-green);
             cursor: pointer;
-            width: 80px;
+            width: 70px;
         }
 
-        /* TABLEAU DE BORD */
+        /* HEADER */
         .game-header {
-            margin-top: 20px;
+            margin-top: 15px;
             background: rgba(8, 12, 20, 0.9);
             border: 2px solid var(--lyoko-blue);
             border-radius: 10px;
-            padding: 12px 25px;
+            padding: 10px 20px;
             display: flex;
-            gap: 30px;
+            gap: 25px;
             z-index: 10;
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
         }
 
         .stat-box { text-align: center; }
-        .stat-title { font-size: 0.8rem; color: #fff; text-transform: uppercase; }
-        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--lyoko-green); }
+        .stat-title { font-size: 0.75rem; color: #fff; text-transform: uppercase; }
+        .stat-value { font-size: 1.6rem; font-weight: bold; color: var(--lyoko-green); }
         .stat-value.red { color: var(--error-red); }
 
         /* ZONE DE JEU */
@@ -113,26 +114,44 @@
             z-index: 10;
         }
 
+        /* SPECTRES & CIBLES DESIGN EN SVG */
         .target {
             position: absolute;
-            width: 85px;
-            height: 85px;
-            background: radial-gradient(circle, var(--error-red) 30%, #a00 90%);
-            border: 3px solid #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 25px var(--error-red);
+            width: 80px;
+            height: 80px;
             cursor: pointer;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.5rem;
-            animation: pulse 0.8s infinite alternate;
             touch-action: manipulation;
+            animation: spawnAnim 0.3s ease-out;
         }
 
-        @keyframes pulse {
-            from { transform: scale(0.9); }
-            to { transform: scale(1.1); }
+        @keyframes spawnAnim {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* TYPE 1 : SPECTRE RED (X.A.N.A.) */
+        .target.red-spectre {
+            filter: drop-shadow(0 0 12px var(--error-red));
+        }
+
+        /* TYPE 2 : BUG BLUE (+3 PTS) */
+        .target.blue-bonus {
+            filter: drop-shadow(0 0 15px var(--lyoko-blue));
+            animation: pulseBonus 0.6s infinite alternate;
+        }
+
+        @keyframes pulseBonus {
+            from { transform: scale(0.95); }
+            to { transform: scale(1.15); }
+        }
+
+        /* TYPE 3 : VIRUS TRAP (-1 PT) */
+        .target.yellow-trap {
+            filter: drop-shadow(0 0 12px var(--warning-yellow));
         }
 
         /* MODALE */
@@ -153,24 +172,32 @@
             background: #0a1118;
             border: 3px solid var(--lyoko-blue);
             border-radius: 10px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
             max-width: 480px;
             width: 90%;
             box-shadow: 0 0 35px var(--lyoko-blue);
         }
 
-        .modal h2 { font-size: 2rem; margin-bottom: 15px; text-transform: uppercase; }
-        .modal p { color: #fff; font-size: 1.2rem; margin-bottom: 25px; line-height: 1.5; }
+        .modal h2 { font-size: 1.8rem; margin-bottom: 12px; text-transform: uppercase; }
+        .modal p { color: #fff; font-size: 1.1rem; margin-bottom: 20px; line-height: 1.5; }
 
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .legend-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed var(--lyoko-blue);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: left;
         }
 
+        .legend-box div { margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+
         .btn {
-            padding: 15px 20px;
+            padding: 14px 20px;
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.1rem;
             font-weight: bold;
@@ -178,20 +205,18 @@
             border-radius: 5px;
             cursor: pointer;
             text-transform: uppercase;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
         .btn-green { background: var(--lyoko-green); color: #000; box-shadow: 0 0 10px var(--lyoko-green); }
         .btn-blue { background: var(--lyoko-blue); color: #000; box-shadow: 0 0 10px var(--lyoko-blue); }
-        .btn-red { background: var(--error-red); color: #fff; }
 
-        .btn:hover { transform: scale(1.05); opacity: 0.9; }
+        .btn:hover { transform: scale(1.03); }
 
         @media (max-width: 480px) {
-            .stat-value { font-size: 1.4rem; }
-            .target { width: 75px; height: 75px; font-size: 2rem; }
-            .modal h2 { font-size: 1.6rem; }
-            .game-header { gap: 15px; }
+            .stat-value { font-size: 1.3rem; }
+            .target { width: 75px; height: 75px; }
+            .modal h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -213,12 +238,12 @@
 
     <div class="game-header">
         <div class="stat-box">
-            <div class="stat-title">SPECTRES</div>
-            <div class="stat-value" id="score">0 / 10</div>
+            <div class="stat-title">SCORE</div>
+            <div class="stat-value" id="score">0 / 12</div>
         </div>
         <div class="stat-box">
             <div class="stat-title">CHRONO</div>
-            <div class="stat-value red" id="timer">30s</div>
+            <div class="stat-value red" id="timer">35s</div>
         </div>
     </div>
 
@@ -226,8 +251,15 @@
 
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
-            <h2 id="modal-title" style="color: var(--lyoko-blue);">MISSION : SECTEUR 5</h2>
-            <p id="modal-text">Clique sur 10 spectres rouges 👁️ avant la fin du temps pour sauver le Supercalculateur !</p>
+            <h2 id="modal-title" style="color: var(--lyoko-blue);">SECTEUR 5 : MISSION</h2>
+            <p id="modal-text">Atteins **12 Points** avant la fin du temps pour désactiver la tour !</p>
+            
+            <div class="legend-box">
+                <div>🔴 <strong>Spectre X.A.N.A. :</strong> +1 Point</div>
+                <div>🔵 <strong>Orbe Cyan :</strong> +3 Points !</div>
+                <div>🟠 <strong>Faux Bug :</strong> -1 Point !</div>
+            </div>
+
             <div class="btn-group" id="modal-buttons">
                 <button class="btn btn-green" onclick="startGame()">▶️ JOUER</button>
             </div>
@@ -249,12 +281,12 @@
             const modalButtons = document.getElementById('modal-buttons');
 
             let score = 0;
-            const targetScore = 10;
-            let timeLeft = 30;
+            const targetScore = 12;
+            let timeLeft = 35;
             let gameActive = false;
             let gameInterval, targetTimeout;
 
-            // --- MUSIQUE & VOLUME ---
+            // --- AUDIO ---
             audio.volume = parseFloat(volumeSlider.value);
             function updateVol() {
                 audio.volume = parseFloat(volumeSlider.value);
@@ -281,7 +313,7 @@
                 if (audio.paused) playMusic(); else stopMusic();
             });
 
-            // --- MATRIX ---
+            // --- FOND MATRIX ---
             const canvas = document.getElementById('matrix-bg');
             const ctx = canvas.getContext('2d');
             function res() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -299,13 +331,38 @@
             }
             setInterval(mtrx, 50);
 
+            // --- DESIGN SVG DES SPECTRES ---
+            const svgRedSpectre = `
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#ff3366" stroke-width="4" stroke-dasharray="6,6"/>
+                    <circle cx="50" cy="50" r="32" fill="#ff3366" opacity="0.2"/>
+                    <circle cx="50" cy="50" r="20" fill="#ff3366"/>
+                    <path d="M 50,20 L 50,80 M 20,50 L 80,50 M 30,30 L 70,70 M 30,70 L 70,30" stroke="#ffffff" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="8" fill="#ffffff"/>
+                </svg>`;
+
+            const svgBlueBonus = `
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="4"/>
+                    <circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.3"/>
+                    <polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/>
+                    <circle cx="50" cy="50" r="10" fill="#ffffff"/>
+                </svg>`;
+
+            const svgYellowTrap = `
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="4" stroke-dasharray="3,3"/>
+                    <polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.4"/>
+                    <text x="50" y="68" font-size="40" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text>
+                </svg>`;
+
             // --- LOGIQUE JEU ---
             window.startGame = function() {
                 playMusic();
                 score = 0;
-                timeLeft = 30;
+                timeLeft = 35;
                 gameActive = true;
-                scoreEl.innerText = `0 / ${targetScore}`;
+                scoreEl.innerText = `${score} / ${targetScore}`;
                 timerEl.innerText = `${timeLeft}s`;
                 modalOverlay.style.display = 'none';
 
@@ -323,22 +380,45 @@
 
                 const t = document.createElement('div');
                 t.classList.add('target');
-                t.innerText = '👁️';
 
-                const maxX = gameArea.clientWidth - 95;
-                const maxY = gameArea.clientHeight - 95;
+                // Probabilités : 70% Rouge (+1), 20% Bleu (+3), 10% Jaune (-1)
+                const rand = Math.random();
+                let points = 1;
+
+                if (rand < 0.70) {
+                    t.classList.add('red-spectre');
+                    t.innerHTML = svgRedSpectre;
+                    points = 1;
+                } else if (rand < 0.88) {
+                    t.classList.add('blue-bonus');
+                    t.innerHTML = svgBlueBonus;
+                    points = 3;
+                } else {
+                    t.classList.add('yellow-trap');
+                    t.innerHTML = svgYellowTrap;
+                    points = -1;
+                }
+
+                const maxX = gameArea.clientWidth - 90;
+                const maxY = gameArea.clientHeight - 90;
                 t.style.left = Math.max(10, Math.floor(Math.random() * maxX)) + "px";
                 t.style.top = Math.max(10, Math.floor(Math.random() * maxY)) + "px";
 
                 t.addEventListener('click', () => {
-                    score++;
+                    score += points;
+                    if (score < 0) score = 0; // Pas de score négatif
                     scoreEl.innerText = `${score} / ${targetScore}`;
-                    if (score >= targetScore) endGame(true);
-                    else { clearTimeout(targetTimeout); spawn(); }
+
+                    if (score >= targetScore) {
+                        endGame(true);
+                    } else {
+                        clearTimeout(targetTimeout);
+                        spawn();
+                    }
                 });
 
                 gameArea.appendChild(t);
-                targetTimeout = setTimeout(spawn, 1500); 
+                targetTimeout = setTimeout(spawn, 1400); // Rythme très équilibré (1.4s)
             }
 
             function endGame(win) {
@@ -349,16 +429,16 @@
                 modalOverlay.style.display = 'flex';
 
                 if (win) {
-                    modalTitle.innerText = "🎉 VICTOIRE !";
+                    modalTitle.innerText = "🎉 TOUR DÉSACTIVÉE !";
                     modalTitle.style.color = "var(--lyoko-green)";
-                    modalText.innerText = "Bravo Agent ! Les tours sont désactivées. Le Supercalculateur est sauvé !";
+                    modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. et sauvé le Supercalculateur !";
                     modalButtons.innerHTML = `
                         <button class="btn btn-blue" onclick="window.location.href='index.html'">👤 ENFANT SUIVANT</button>
                     `;
                 } else {
                     modalTitle.innerText = "❌ ÉCHEC MISSION";
                     modalTitle.style.color = "var(--error-red)";
-                    modalText.innerText = "X.A.N.A. a gagné ! Le temps est écoulé. Veux-tu réessayer ou laisser la place ?";
+                    modalText.innerText = "X.A.N.A. a pris le contrôle ! Veux-tu réessayer ou passer la main ?";
                     modalButtons.innerHTML = `
                         <button class="btn btn-green" onclick="startGame()">🔄 RÉESSAYER</button>
                         <button class="btn btn-blue" onclick="window.location.href='index.html'">👤 ENFANT SUIVANT</button>
