@@ -24,31 +24,30 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        body, html {
             background-color: var(--bg-dark);
             color: var(--lyoko-green);
             font-family: 'Share Tech Mono', monospace;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
         }
 
         #matrix-bg {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
             opacity: 0.3;
         }
 
-        /* BARRE AUDIO EN HAUT */
+        /* BARRE AUDIO */
         .audio-controls {
-            position: fixed;
+            position: absolute;
             top: 10px;
             right: 10px;
             background: rgba(8, 12, 20, 0.95);
@@ -59,7 +58,6 @@
             align-items: center;
             gap: 8px;
             z-index: 50;
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
         }
 
         .music-btn {
@@ -72,7 +70,6 @@
             font-size: 0.8rem;
             cursor: pointer;
             border-radius: 4px;
-            touch-action: manipulation;
         }
 
         .volume-container {
@@ -89,52 +86,56 @@
             width: 60px;
         }
 
-        /* BANDEAU EN-TÊTE ET RÈGLES */
+        /* EN-TÊTE DU JEU */
         .top-container {
-            margin-top: 10px;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding-top: 50px; /* Laisse la place au bouton musique */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            z-index: 10;
+            gap: 10px;
+            flex-shrink: 0;
         }
 
         .game-header {
             background: rgba(8, 12, 20, 0.9);
             border: 2px solid var(--lyoko-blue);
             border-radius: 10px;
-            padding: 6px 18px;
+            padding: 8px 20px;
             display: flex;
-            gap: 20px;
+            gap: 30px;
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
         }
 
         .stat-box { text-align: center; }
-        .stat-title { font-size: 0.7rem; color: #fff; text-transform: uppercase; }
-        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--lyoko-green); }
+        .stat-title { font-size: 0.75rem; color: #fff; text-transform: uppercase; }
+        .stat-value { font-size: 1.6rem; font-weight: bold; color: var(--lyoko-green); }
         .stat-value.red { color: var(--error-red); }
 
         .mini-rules-bar {
             background: rgba(8, 12, 20, 0.85);
             border: 1px dashed var(--lyoko-blue);
             border-radius: 6px;
-            padding: 3px 10px;
+            padding: 5px 15px;
             display: flex;
-            gap: 10px;
-            font-size: 0.75rem;
+            gap: 15px;
+            font-size: 0.8rem;
             color: var(--text-main);
         }
 
-        /* ZONE DE JEU (FIXÉE À 70% DE LA HAUTEUR) */
+        /* ZONE DE JEU GARANTIE */
         .game-area {
             position: relative;
             width: 100%;
-            height: 70vh;
+            flex-grow: 1; /* Prend tout l'espace restant de l'écran */
             z-index: 10;
             overflow: hidden;
+            display: block;
         }
 
-        /* CIBLES SVG */
+        /* CIBLES */
         .target {
             position: absolute;
             width: 75px;
@@ -144,7 +145,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            touch-action: manipulation;
+            z-index: 999;
             animation: spawnAnim 0.15s ease-out;
         }
 
@@ -165,53 +166,45 @@
             to { transform: scale(1.15); }
         }
 
-        /* FENÊTRE FIN DE PARTIE */
+        /* MODALE DE FIN */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0, 0, 0, 0.9);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .modal {
             background: #0a1118;
             border: 3px solid var(--lyoko-blue);
             border-radius: 10px;
-            padding: 22px;
+            padding: 25px;
             text-align: center;
-            max-width: 420px;
+            max-width: 400px;
             width: 90%;
             box-shadow: 0 0 30px var(--lyoko-blue);
         }
 
         .modal h2 { font-size: 1.6rem; margin-bottom: 10px; text-transform: uppercase; }
-        .modal p { color: #fff; font-size: 1rem; margin-bottom: 18px; line-height: 1.4; }
+        .modal p { color: #fff; font-size: 1rem; margin-bottom: 20px; line-height: 1.4; }
 
         .btn-group { display: flex; flex-direction: column; gap: 10px; }
 
         .btn {
-            padding: 12px 18px;
+            padding: 14px 20px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-transform: uppercase;
-            transition: 0.2s;
-            touch-action: manipulation;
         }
-
-        .btn-green { background: var(--lyoko-green); color: #000; box-shadow: 0 0 10px var(--lyoko-green); }
-        .btn-blue { background: var(--lyoko-blue); color: #000; box-shadow: 0 0 10px var(--lyoko-blue); }
-
-        .btn:active { transform: scale(0.96); }
+        .btn-green { background: var(--lyoko-green); color: #000; }
+        .btn-blue { background: var(--lyoko-blue); color: #000; }
 
         @media (max-width: 480px) {
             .target { width: 70px; height: 70px; }
@@ -223,10 +216,6 @@
 
     <canvas id="matrix-bg"></canvas>
 
-    <audio id="bg-music" loop preload="auto">
-        <source src="Alerte.XANA.mp3" type="audio/mpeg">
-    </audio>
-
     <div class="audio-controls">
         <button id="toggle-music" class="music-btn">🔊 MUSIQUE : ON</button>
         <div class="volume-container">
@@ -234,6 +223,10 @@
             <span id="volume-text">50%</span>
         </div>
     </div>
+
+    <audio id="bg-music" loop preload="auto">
+        <source src="Alerte.XANA.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="top-container">
         <div class="game-header">
@@ -285,14 +278,12 @@
             let gameInterval = null;
             let targetTimeout = null;
 
-            // --- GESTION AUDIO ---
+            // AUDIO
             audio.volume = parseFloat(volumeSlider.value);
-
-            function updateVol() {
+            volumeSlider.addEventListener('input', () => {
                 audio.volume = parseFloat(volumeSlider.value);
                 if (volumeText) volumeText.innerText = Math.round(audio.volume * 100) + "%";
-            }
-            volumeSlider.addEventListener('input', updateVol);
+            });
 
             function playMusic() {
                 audio.play().then(() => {
@@ -306,53 +297,39 @@
                 });
             }
 
-            function stopMusic() {
-                audio.pause();
-                musicBtn.innerText = "🔇 MUSIQUE : OFF";
-                musicBtn.style.background = "var(--error-red)";
-                musicBtn.style.color = "#fff";
-            }
-
             musicBtn.addEventListener('click', () => {
-                if (audio.paused) playMusic(); else stopMusic();
+                if (audio.paused) playMusic(); else {
+                    audio.pause();
+                    musicBtn.innerText = "🔇 MUSIQUE : OFF";
+                    musicBtn.style.background = "var(--error-red)";
+                    musicBtn.style.color = "#fff";
+                }
             });
 
-            // --- ANIMATION FOND (MATRIX) ---
+            // MATRIX BG
             const canvas = document.getElementById('matrix-bg');
             const ctx = canvas.getContext('2d');
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+            function res() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            window.addEventListener('resize', res); res();
+            let drops = Array(Math.floor(canvas.width / 16)).fill(1);
 
-            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const fontSize = 16;
-            let cols = Math.floor(canvas.width / fontSize);
-            let drops = Array(cols).fill(1);
-
-            function drawMatrix() {
+            setInterval(() => {
                 ctx.fillStyle = "rgba(5, 8, 10, 0.1)";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#00ff66";
-                ctx.font = fontSize + "px monospace";
-
+                ctx.fillStyle = "#00ff66"; ctx.font = "16px monospace";
                 drops.forEach((y, i) => {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillText(text, i * fontSize, y * fontSize);
-                    if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    ctx.fillText("01"[Math.floor(Math.random()*2)], i * 16, y * 16);
+                    if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
                     drops[i]++;
                 });
-            }
-            setInterval(drawMatrix, 45);
+            }, 45);
 
-            // --- GRAPHISMES SVG ---
+            // SVGs
             const svgRed = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff3366" stroke-width="4" stroke-dasharray="6,6"/><circle cx="50" cy="50" r="32" fill="#ff3366" opacity="0.2"/><circle cx="50" cy="50" r="20" fill="#ff3366"/><path d="M 50,20 L 50,80 M 20,50 L 80,50" stroke="#ffffff" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="#ffffff"/></svg>`;
             const svgBlue = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#00ccff" stroke-width="4"/><circle cx="50" cy="50" r="30" fill="#00ccff" opacity="0.3"/><polygon points="50,15 63,38 88,50 63,62 50,85 37,62 12,50 37,38" fill="#00ccff"/><circle cx="50" cy="50" r="10" fill="#ffffff"/></svg>`;
             const svgYellow = `<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="4"/><polygon points="50,18 82,80 18,80" fill="#ffcc00" opacity="0.4"/><text x="50" y="68" font-size="40" font-weight="bold" fill="#ffffff" text-anchor="middle">!</text></svg>`;
 
-            // --- LOGIQUE DÉROULEMENT DU JEU ---
+            // JEU
             function startGame() {
                 playMusic();
                 score = 0;
@@ -385,32 +362,26 @@
                 let points = 1;
 
                 if (rand < 0.65) {
-                    t.classList.add('red-spectre');
-                    t.innerHTML = svgRed;
-                    points = 1;
+                    t.classList.add('red-spectre'); t.innerHTML = svgRed; points = 1;
                 } else if (rand < 0.80) {
-                    t.classList.add('blue-bonus');
-                    t.innerHTML = svgBlue;
-                    points = 3;
+                    t.classList.add('blue-bonus'); t.innerHTML = svgBlue; points = 3;
                 } else {
-                    t.classList.add('yellow-trap');
-                    t.innerHTML = svgYellow;
-                    points = -1;
+                    t.classList.add('yellow-trap'); t.innerHTML = svgYellow; points = -1;
                 }
 
-                const targetSize = 75;
-                const areaWidth = gameArea.clientWidth || window.innerWidth;
-                const areaHeight = gameArea.clientHeight || (window.innerHeight * 0.7);
-
-                const maxX = Math.max(10, areaWidth - targetSize - 20);
-                const maxY = Math.max(10, areaHeight - targetSize - 20);
+                // Récupère les dimensions exactes de la zone dispo
+                const rect = gameArea.getBoundingClientRect();
+                const maxX = Math.max(0, rect.width - 75);
+                const maxY = Math.max(0, rect.height - 75);
 
                 t.style.left = Math.floor(Math.random() * maxX) + "px";
                 t.style.top = Math.floor(Math.random() * maxY) + "px";
 
+                let clicked = false;
                 const handleHit = (e) => {
                     if (e) e.preventDefault();
-                    if (!gameActive) return;
+                    if (clicked || !gameActive) return;
+                    clicked = true;
 
                     score += points;
                     if (score < 0) score = 0;
@@ -424,7 +395,9 @@
                     }
                 };
 
-                t.addEventListener('pointerdown', handleHit);
+                // Compatible PC et Mobile
+                t.addEventListener('touchstart', handleHit, {passive: false});
+                t.addEventListener('mousedown', handleHit);
 
                 gameArea.appendChild(t);
                 targetTimeout = setTimeout(spawn, 1000);
@@ -441,14 +414,12 @@
                 if (win) {
                     modalTitle.innerText = "🎉 TOUR DÉSACTIVÉE !";
                     modalTitle.style.color = "var(--lyoko-green)";
-                    modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. et sauvé le Supercalculateur !";
-                    modalButtons.innerHTML = `
-                        <button class="btn btn-blue" id="next-btn">👤 ENFANT SUIVANT</button>
-                    `;
+                    modalText.innerText = "Bravo Agent ! Tu as repoussé X.A.N.A. !";
+                    modalButtons.innerHTML = `<button class="btn btn-blue" id="next-btn">👤 ENFANT SUIVANT</button>`;
                 } else {
                     modalTitle.innerText = "❌ ÉCHEC MISSION";
                     modalTitle.style.color = "var(--error-red)";
-                    modalText.innerText = "X.A.N.A. a pris le contrôle ! Veux-tu réessayer ou passer la main ?";
+                    modalText.innerText = "X.A.N.A. a pris le contrôle !";
                     modalButtons.innerHTML = `
                         <button class="btn btn-green" id="retry-btn">🔄 RÉESSAYER</button>
                         <button class="btn btn-blue" id="next-btn">👤 ENFANT SUIVANT</button>
@@ -462,7 +433,8 @@
                 if (nextBtn) nextBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
             }
 
-            startGame();
+            // Attendre un tout petit peu que le CSS charge la taille de l'écran avant de lancer
+            setTimeout(startGame, 100);
         });
     </script>
 </body>
