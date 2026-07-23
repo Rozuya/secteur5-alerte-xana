@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Secteur 5 : Alerte X.A.N.A. - Accueil</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -20,17 +20,25 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--lyoko-green);
             font-family: 'Share Tech Mono', monospace;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 15px;
+        }
+
+        html {
+            height: -webkit-fill-available;
         }
 
         #matrix-bg {
@@ -40,10 +48,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.4;
+            opacity: 0.35;
         }
 
-        /* BARRE D'AUDIO EN HAUT */
+        /* BARRE AUDIO OPTIMISÉE PC & MOBILE */
         .audio-controls {
             position: fixed;
             top: 15px;
@@ -51,29 +59,31 @@
             background: rgba(8, 12, 20, 0.95);
             border: 1px solid var(--lyoko-blue);
             border-radius: 8px;
-            padding: 10px 15px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             z-index: 50;
             box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+            backdrop-filter: blur(5px);
         }
 
         .music-btn {
             background: var(--error-red);
             color: #ffffff;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 12px;
             font-family: 'Share Tech Mono', monospace;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             border-radius: 4px;
-            transition: 0.2s;
+            transition: transform 0.1s, opacity 0.2s;
+            touch-action: manipulation;
         }
 
-        .music-btn:hover {
-            opacity: 0.9;
+        .music-btn:active {
+            transform: scale(0.95);
         }
 
         .volume-container {
@@ -81,56 +91,281 @@
             align-items: center;
             gap: 8px;
             color: var(--lyoko-blue);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         input[type="range"] {
             accent-color: var(--lyoko-green);
             cursor: pointer;
-            width: 90px;
+            width: 75px;
+            height: 18px;
         }
 
-        /* TERMINAL PRINCIPAL */
+        /* TERMINAL PRINCIPAL ACCUEIL */
         .terminal-container {
-            background: rgba(8, 12, 20, 0.9);
+            background: rgba(8, 12, 20, 0.92);
             border: 2px solid var(--lyoko-green);
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.3);
-            padding: 30px;
-            width: 90%;
-            max-width: 650px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
+            padding: 25px;
+            width: 100%;
+            max-width: 580px;
             text-align: center;
             z-index: 10;
             position: relative;
+            backdrop-filter: blur(8px);
         }
 
         .game-subtitle {
             color: var(--lyoko-blue);
-            font-size: 1rem;
+            font-size: 0.9rem;
             letter-spacing: 2px;
             margin-bottom: 5px;
             text-transform: uppercase;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--error-red);
             text-transform: uppercase;
             margin-bottom: 20px;
-            text-shadow: 0 0 15px var(--error-red);
-            letter-spacing: 2px;
+            text-shadow: 0 0 12px var(--error-red);
+            letter-spacing: 1.5px;
+            line-height: 1.2;
         }
 
+        /* BOÎTE DES RÈGLES */
         .rules-box {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.65);
             border: 1px dashed var(--lyoko-blue);
-            padding: 20px;
-            border-radius: 5px;
+            padding: 18px;
+            border-radius: 8px;
             text-align: left;
-            margin-bottom: 25px;
-            line-height: 1.6;
+            margin-bottom: 22px;
+            line-height: 1.5;
             color: var(--text-main);
-            font-size: 1.05rem;
+            font-size: 0.95rem;
         }
 
-        .
+        .rules-box p {
+            margin-bottom: 8px;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rules-box li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* BOUTON LANCER LA MISSION */
+        .start-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--lyoko-green);
+            color: #000;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px var(--lyoko-green);
+            touch-action: manipulation;
+        }
+
+        .start-btn:hover {
+            background: var(--lyoko-blue);
+            box-shadow: 0 0 25px var(--lyoko-blue);
+            transform: translateY(-2px);
+        }
+
+        .start-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* RESPONSIVE SMARTPHONES & TABLETTES */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .audio-controls {
+                top: 10px;
+                right: 10px;
+                padding: 6px 10px;
+            }
+
+            .volume-container span {
+                display: none; /* Cache le % sur très petit écran pour garder de la place */
+            }
+
+            input[type="range"] {
+                width: 60px;
+            }
+
+            .terminal-container {
+                padding: 18px 15px;
+                margin-top: 30px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .game-subtitle {
+                font-size: 0.8rem;
+            }
+
+            .rules-box {
+                font-size: 0.88rem;
+                padding: 14px;
+                margin-bottom: 18px;
+            }
+
+            .start-btn {
+                font-size: 1.1rem;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <audio id="bg-music" loop preload="auto">
+        <source src="Alerte.XANA.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="audio-controls">
+        <button id="toggle-music" class="music-btn">🔇 MUSIQUE : OFF</button>
+        <div class="volume-container">
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+            <span id="volume-text">50%</span>
+        </div>
+    </div>
+
+    <div class="terminal-container">
+        <div class="game-subtitle">SECTEUR 5</div>
+        <h1>👾 ALERTE X.A.N.A.</h1>
+
+        <div class="rules-box">
+            <p><strong>ATTENTION AGENT !</strong></p>
+            <p>X.A.N.A. lance une attaque sur le Supercalculateur !</p>
+            <br>
+            <p><strong>MISSION :</strong></p>
+            <ul>
+                <li>⚡ Marque au moins <strong>15 Points</strong> en <strong>35 secondes</strong> !</li>
+                <li>🔴 <strong>Spectre rouge :</strong> +1 Point</li>
+                <li>🔵 <strong>Orbe cyan :</strong> +3 Points (Bonus !)</li>
+                <li>🟠 <strong>Piège jaune :</strong> -1 Point (Attention !)</li>
+            </ul>
+        </div>
+
+        <button class="start-btn" id="start-btn">
+            ▶️ LANCER LA MISSION
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('toggle-music');
+            const volumeSlider = document.getElementById('volume-slider');
+            const volumeText = document.getElementById('volume-text');
+            const startBtn = document.getElementById('start-btn');
+
+            // Initialisation Volume
+            audio.volume = parseFloat(volumeSlider.value);
+
+            function updateVolume() {
+                const val = parseFloat(volumeSlider.value);
+                audio.volume = val;
+                volumeText.innerText = Math.round(val * 100) + "%";
+            }
+
+            volumeSlider.addEventListener('input', updateVolume);
+
+            function playAudio() {
+                return audio.play().then(() => {
+                    musicBtn.innerText = "🔊 MUSIQUE : ON";
+                    musicBtn.style.background = "var(--lyoko-blue)";
+                    musicBtn.style.color = "#000";
+                }).catch(() => {
+                    pauseAudio();
+                });
+            }
+
+            function pauseAudio() {
+                audio.pause();
+                musicBtn.innerText = "🔇 MUSIQUE : OFF";
+                musicBtn.style.background = "var(--error-red)";
+                musicBtn.style.color = "#fff";
+            }
+
+            musicBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    playAudio();
+                } else {
+                    pauseAudio();
+                }
+            });
+
+            // Lancement de la mission & redirection
+            startBtn.addEventListener('click', () => {
+                playAudio().finally(() => {
+                    window.location.href = "jeu.html";
+                });
+            });
+
+            // --- ANIMATION MATRIX DE FOND (HAUTE PERFORMANCE) ---
+            const canvas = document.getElementById('matrix-bg');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const fontSize = 16;
+            let columns = Math.floor(canvas.width / fontSize);
+            let drops = Array(columns).fill(1);
+
+            window.addEventListener('resize', () => {
+                columns = Math.floor(canvas.width / fontSize);
+                drops = Array(columns).fill(1);
+            });
+
+            function drawMatrix() {
+                ctx.fillStyle = "rgba(5, 8, 10, 0.08)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#00ff66";
+                ctx.font = fontSize + "px monospace";
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            setInterval(drawMatrix, 40);
+        });
+    </script>
+</body>
+</html>
