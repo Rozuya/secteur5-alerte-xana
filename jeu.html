@@ -29,7 +29,6 @@
             color: var(--lyoko-green);
             font-family: 'Share Tech Mono', monospace;
             height: 100vh;
-            height: -webkit-fill-available;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -126,11 +125,11 @@
             color: var(--text-main);
         }
 
-        /* ZONE DE JEU */
+        /* ZONE DE JEU (FIXÉE À 70% DE LA HAUTEUR) */
         .game-area {
             position: relative;
             width: 100%;
-            flex-grow: 1;
+            height: 70vh;
             z-index: 10;
             overflow: hidden;
         }
@@ -400,15 +399,17 @@
                 }
 
                 const targetSize = 75;
-                const maxX = Math.max(10, gameArea.clientWidth - targetSize - 10);
-                const maxY = Math.max(10, gameArea.clientHeight - targetSize - 10);
+                const areaWidth = gameArea.clientWidth || window.innerWidth;
+                const areaHeight = gameArea.clientHeight || (window.innerHeight * 0.7);
+
+                const maxX = Math.max(10, areaWidth - targetSize - 20);
+                const maxY = Math.max(10, areaHeight - targetSize - 20);
 
                 t.style.left = Math.floor(Math.random() * maxX) + "px";
                 t.style.top = Math.floor(Math.random() * maxY) + "px";
 
-                // Événement Clic & Touch
                 const handleHit = (e) => {
-                    e.preventDefault();
+                    if (e) e.preventDefault();
                     if (!gameActive) return;
 
                     score += points;
@@ -454,7 +455,6 @@
                     `;
                 }
 
-                // Attachement propre des boutons de fin
                 const retryBtn = document.getElementById('retry-btn');
                 const nextBtn = document.getElementById('next-btn');
 
@@ -462,7 +462,6 @@
                 if (nextBtn) nextBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
             }
 
-            // Démarrage automatique au chargement
             startGame();
         });
     </script>
