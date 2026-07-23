@@ -12,6 +12,7 @@
             --lyoko-blue: #00ccff;
             --bg-dark: #05080a;
             --error-red: #ff3366;
+            --warning-yellow: #ffcc00;
             --text-main: #e0e0e0;
         }
 
@@ -129,7 +130,7 @@
             margin-bottom: 25px;
             line-height: 1.6;
             color: var(--text-main);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         .rules-box p {
@@ -138,7 +139,7 @@
 
         .rules-box ul {
             list-style: none;
-            padding-left: 10px;
+            padding-left: 5px;
         }
 
         .rules-box li {
@@ -198,13 +199,14 @@
 
         <div class="rules-box">
             <p><strong>ATTENTION AGENT !</strong></p>
-            <p>X.A.N.A. a envoyé des spectres pour attaquer le Supercalculateur !</p>
+            <p>X.A.N.A. lance une attaque sur le Supercalculateur !</p>
             <br>
             <p><strong>MISSION :</strong></p>
             <ul>
-                <li>⚡ Clique sur <strong>10 spectres rouges 👁️</strong></li>
-                <li>⏱️ Tu as <strong>30 secondes</strong> chrono !</li>
-                <li>🎯 Reste concentré, ils se déplacent vite !</li>
+                <li>⚡ Marque au moins <strong>12 Points</strong> en <strong>35 secondes</strong> !</li>
+                <li>🔴 <strong>Spectre rouge :</strong> +1 Point</li>
+                <li>🔵 <strong>Orbe cyan :</strong> +3 Points (Bonus !)</li>
+                <li>🟠 <strong>Piège jaune :</strong> -1 Point (Évite-le !)</li>
             </ul>
         </div>
 
@@ -241,7 +243,6 @@
                     musicBtn.style.color = "#000";
                 }).catch((error) => {
                     console.error("Erreur de lecture audio :", error);
-                    alert("Impossible de lire le fichier 'Alerte.XANA.mp3'. Vérifie qu'il est bien placé au même endroit sur GitHub !");
                 });
             }
 
